@@ -6,13 +6,15 @@ let tabId;
 let running = false;
 let busy = false;
 let poll;
+let storageWarning = false;
 
 function render(state) {
   running = state.running;
   toggle.textContent = running ? "Stop scrolling" : "Start scrolling";
   toggle.dataset.running = String(running);
   status.dataset.error = "false";
-  status.textContent = running ? "Scrolling this tab at your pace." : state.reason === "bottom" ? "You’ve reached the bottom of this page." : "Ready when you are.";
+  status.textContent = running ? "Scrolling this tab at your pace." : state.reason === "no-scroll" ? "This page has no vertical scrolling space." : state.reason === "bottom" ? "You’ve reached the bottom of this page." : "Ready when you are.";
+  if (storageWarning) status.textContent += " Your speed could not be saved.";
 }
 
 function unavailable() {
@@ -32,7 +34,7 @@ slider.addEventListener("input", async () => {
   const speed = Number(slider.value);
   value.textContent = `${speed} px/s`;
   // Save immediately so closing the popup doesn't discard the preference.
-  chrome.storage.local.set({ speed }).catch(() => {});
+  chrome.storage.local.set({ speed }).then(() => { storageWarning = false; }).catch(() => { storageWarning = true; });
   try { render(await send("speed", speed)); } catch { unavailable(); }
 });
 
@@ -53,7 +55,10 @@ async function init() {
     tabId = tab.id;
     await chrome.scripting.executeScript({ target: { tabId }, files: ["content.js"] });
     const state = await send("state");
-    const saved = await chrome.storage.local.get("speed");
+    const saved = await chrome.storage.local.get("speed").catch(() => {
+      storageWarning = true;
+      return {};
+    });
     const speed = state.running ? state.speed : Number.isFinite(saved.speed) ? Math.max(10, Math.min(300, saved.speed)) : 60;
     slider.value = String(speed);
     value.textContent = `${speed} px/s`;

@@ -43,6 +43,15 @@
 
   function start() {
     if (running) return;
+    const page = document.scrollingElement;
+    if (!page || page.scrollHeight <= page.clientHeight + 1) {
+      stop("no-scroll");
+      return;
+    }
+    if (page.scrollTop + page.clientHeight >= page.scrollHeight - 1) {
+      stop("bottom");
+      return;
+    }
     running = true;
     reason = "running";
     overlay = document.createElement("div");

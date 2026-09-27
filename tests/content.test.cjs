@@ -69,6 +69,12 @@ test('bottom of page stops and reports its reason', () => {
   assert.equal(app.message('state').reason, 'bottom');
   assert.equal(app.frames.size, 0);
 });
+test('short pages do not start an animation or insert a stop button', () => {
+  const app = setup(); app.page.scrollHeight = 800;
+  assert.equal(app.message('start').reason, 'no-scroll');
+  assert.equal(app.frames.size, 0);
+  assert.equal(app.elements.filter(e => e.tag === 'button').length, 0);
+});
 test('speed changes apply live and suspended frames do not cause large jumps', () => {
   const app = setup(); app.message('start', 100); app.frame(0); app.frame(100);
   assert.equal(app.page.scrollTop, 10);
