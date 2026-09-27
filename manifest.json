@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "Autoscroller",
+  "version": "0.1.0",
+  "description": "Read at your own pace with adjustable automatic scrolling and an on-page stop button.",
+  "permissions": ["activeTab", "scripting", "storage"],
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "action": {
+    "default_title": "Autoscroller",
+    "default_icon": { "16": "icons/icon-16.png", "32": "icons/icon-32.png" },
+    "default_popup": "popup.html"
+  }
+}

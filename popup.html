@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Autoscroller</title>
+    <link rel="stylesheet" href="popup.css">
+    <script src="popup.js" defer></script>
+  </head>
+  <body>
+    <header><span class="mark" aria-hidden="true">↓</span><span>Autoscroller</span></header>
+    <main>
+      <h1>Find your reading pace.</h1>
+      <p class="intro">Let the page move with you.</p>
+      <div class="speed-heading"><label for="speed">Scroll speed</label><output id="speed-value" for="speed">60 px/s</output></div>
+      <input id="speed" type="range" min="10" max="300" step="5" value="60" disabled>
+      <div class="range-labels"><span>Slow</span><span>Fast</span></div>
+      <button id="toggle" type="button" disabled>Loading…</button>
+      <p id="status" role="status" aria-live="polite">Connecting to this page…</p>
+    </main>
+    <footer>Stop anytime with <kbd>Esc</kbd> or the page button.</footer>
+  </body>
+</html>
